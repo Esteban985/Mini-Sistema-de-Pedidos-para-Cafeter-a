@@ -4,146 +4,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mini Sistema de Pedidos - Cafetería</title>
+    <title>Café Coffeetime | Experiencia de Especialidad</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body class="bg-light">
+<body>
 
-    <nav class="navbar navbar-dark custom-navbar sticky-top shadow-sm">
+    <nav class="navbar navbar-dark custom-navbar sticky-top shadow">
         <div class="container">
-            <span class="navbar-brand mb-0 h1">
-                <i class="bi bi-cup-hot-fill me-2"></i>Café Coffeetime
+            <span class="navbar-brand fw-bold">
+                <i class="bi bi-cup-hot-fill me-2"></i>
+                Café Coffeetime
             </span>
         </div>
     </nav>
+
+    <div class="container mt-4">
+        <div class="hero-section">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <span class="badge bg-amber mb-2" style="background-color: rgba(255,255,255,0.15) !important; color: #fff !important;">Granos de Origen</span>
+                    <h1 class="hero-title mb-3">
+                        La mejor experiencia de cafetería
+                    </h1>
+                    <p class="hero-text mb-0">
+                        Explora nuestro exclusivo menú artesanal, personaliza tu pedido en tiempo real y disfruta de una experiencia moderna de compra desde tu dispositivo.
+                    </p>
+                </div>
+                <div class="col-lg-4 text-center text-lg-end mt-4 mt-lg-0 d-none d-lg-block">
+                    <i class="bi bi-cup-hot display-1" style="color: var(--coffeetime-accent); filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));"></i>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="container my-4">
         <div class="row g-4">
 
             <div class="col-lg-8">
-                <div class="card shadow-sm p-3 mb-4 border-0">
+
+                <div class="filter-container mb-4">
                     <div class="row g-3 align-items-center">
                         <div class="col-md-5">
                             <div class="input-group">
-                                <span class="input-group-text bg-white border-end-0 text-muted">
-                                    <i class="bi bi-search"></i>
+                                <span class="input-group-text bg-white border-end-0 py-2">
+                                    <i class="bi bi-search text-muted"></i>
                                 </span>
-                                <input type="text" id="search-input" class="form-control border-start-0 ps-0"
-                                    placeholder="Buscar producto...">
+                                <input
+                                    type="text"
+                                    id="search-input"
+                                    class="form-control border-start-0 py-2"
+                                    placeholder="¿Qué se te antoja hoy?...">
                             </div>
                         </div>
+
                         <div class="col-md-7">
-                            <div class="d-flex flex-wrap gap-2 justify-content-md-end" id="category-filters">
-                                <button class="todo btn btn-custom-filter" data-category="todos">Todas</button>
-                                <button class="bebida-caliente btn btn-custom-filter" data-category="Bebida caliente">Bebidas
-                                    calientes</button>
-                                <button class="bebida-fria btn btn-custom-filter" data-category="Bebida fría">Bebidas frías</button>
-                                <button class="postre btn btn-custom-filter" data-category="Postre">Postres</button>
-                                <button class="comida btn btn-custom-filter" data-category="Postre">Comida</button>
+                            <div id="category-filters" class="d-flex flex-wrap gap-2 justify-content-md-end">
+                                <button class="todo btn btn-custom-filter">Todas</button>
+                                <button class="bebida-caliente btn btn-custom-filter">Calientes</button>
+                                <button class="bebida-fria btn btn-custom-filter">Frías</button>
+                                <button class="postre btn btn-custom-filter">Postres</button>
+                                <button class="comida btn btn-custom-filter">Comida</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <h3 class="h5 mb-3 text-secondary fw-bold">Productos Disponibles</h3>
-                <div class="row row-cols-1 row-cols-md-2 g-3" id="products-container">
+                <div class="d-flex justify-content-between align-items-center mb-4 ps-2">
+                    <h3 class="fw-bold mb-0 text-dark">
+                        <i class="bi bi-grid-fill me-2 text-muted" style="font-size: 1.3rem;"></i>
+                        Nuestra Carta
+                    </h3>
+                    <span class="badge bg-dark fs-6 px-3 py-2 rounded-pill">
+                        Menú del Día
+                    </span>
                 </div>
+
+                <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4" id="products-container">
+                    </div>
             </div>
 
             <div class="col-lg-4">
                 <div class="sticky-sidebar">
-
-                    <div class="card shadow-sm border-0 mb-4">
-                        <div
-                            class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
-                            <h3 class="h5 mb-0 fw-bold text-dark">
-                                <i class="bi bi-receipt me-2 text-primary"></i>Tu Pedido
-                            </h3>
+                    <div class="card order-card border-0 shadow-lg">
+                        
+                        <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center border-bottom">
+                            <h4 class="fw-bold mb-0 text-dark" style="font-size: 1.25rem;">
+                                <i class="bi bi-receipt-cutoff me-2 text-muted"></i>
+                                Tu Pedido
+                            </h4>
+                            <i class="bi bi-bag-heart text-muted fs-5"></i>
                         </div>
 
-                        <div class="card-body p-0 max-height-order" id="order-items-container">
-                        </div>
+                        <div id="order-items-container" class="card-body p-0 max-height-order">
+                            </div>
 
-                        <div class="card-footer bg-light p-3 border-0">
-                            <div class="d-flex justify-content-between mb-2 text-secondary">
-                                <span>Subtotal:</span>
-                                <span id="summary-subtotal">Q0.00</span>
+                        <div class="card-footer border-0 bg-white p-4 border-top">
+                            <div class="d-flex justify-content-between mb-2 text-muted small">
+                                <span>Subtotal base</span>
+                                <span id="summary-subtotal" class="fw-medium text-dark">Q0.00</span>
                             </div>
-                            <div class="d-flex justify-content-between mb-2 text-secondary">
-                                <span>Impuesto/Recargo (5%):</span>
-                                <span id="summary-tax">Q0.00</span>
+
+                            <div class="d-flex justify-content-between mb-3 text-muted small">
+                                <span>Servicio / Impuesto (5%)</span>
+                                <span id="summary-tax" class="fw-medium text-dark">Q0.00</span>
                             </div>
-                            <hr class="my-2">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <span class="fw-bold text-dark fs-5">Total:</span>
-                                <span class="fw-bold text-primary fs-4" id="summary-total">Q0.00</span>
+
+                            <hr class="my-3" style="border-color: rgba(140, 126, 116, 0.2);">
+
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <span class="fw-bold fs-5 text-dark">Total</span>
+                                <span id="summary-total" class="fw-bold fs-3" style="color: var(--coffeetime-medium)">
+                                    Q0.00
+                                </span>
                             </div>
+
                             <div class="row g-2">
-                                <div class="col-6">
-                                    <button
-                                        class="btn btn-outline-danger w-100 rounded-pill py-2 text-uppercase font-monospace small fw-bold"
-                                        id="btn-clear">
+                                <div class="col-5">
+                                    <button id="btn-clear" class="btn btn-outline-danger w-100 rounded-pill py-2 fw-semibold btn-sm">
                                         <i class="bi bi-trash me-1"></i> Vaciar
                                     </button>
                                 </div>
-                                <div class="col-6">
-                                    <button
-                                        class="btn btn-primary w-100 rounded-pill py-2 text-uppercase font-monospace small fw-bold shadow-sm"
-                                        id="btn-checkout" data-bs-toggle="modal" data-bs-target="#modalResumen">
-                                        <i class="bi bi-check2-circle me-1"></i> Finalizar
+                                <div class="col-7">
+                                    <button id="btn-checkout" class="btn btn-primary w-100 rounded-pill py-2 shadow-sm d-flex align-items-center justify-content-center gap-2" data-bs-toggle="modal" data-bs-target="#modalResumen">
+                                        <i class="bi bi-check-circle-fill"></i> Finalizar Compra
                                     </button>
                                 </div>
                             </div>
+
                         </div>
                     </div>
-
                 </div>
             </div>
 
         </div>
     </div>
-    
-    <div class="modal fade" id="modalResumen" tabindex="-1" aria-labelledby="modalResumenLabel" aria-hidden="true">
+
+    <div class="modal fade" id="modalResumen" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow">
-                <div class="modal-header bg-success text-white border-0 py-3">
-                    <h5 class="modal-title fw-bold" id="modalResumenLabel">
-                        <i class="bi bi-check-circle-fill me-2"></i>¡Pedido Finalizado!
+            <div class="modal-content border-0 shadow-lg">
+                
+                <div class="modal-header border-0 px-4 py-3">
+                    <h5 class="modal-title fw-bold fs-5">
+                        <i class="bi bi-patch-check-fill text-success me-2"></i>
+                        Pedido Confirmado
                     </h5>
-                    <button type="text" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-submit="modal" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body p-4 text-center">
-                    <div class="mb-3 text-success">
-                        <i class="bi bi-bag-heart display-1"></i>
-                    </div>
-                    <h4 class="fw-bold text-dark mb-1">¡Gracias por tu compra!</h4>
-                    <p class="text-muted small">A continuación verás el resumen de tu orden:</p>
-                    <hr class="my-3">
 
-                    <div class="text-start bg-light p-3 rounded mb-3" id="modal-receipt-items">
-                        <p class="fw-bold text-secondary border-bottom pb-1 mb-2">Productos:</p>
+                <div class="modal-body text-center p-4">
+                    <div class="mb-3">
+                        <i class="bi bi-check2-circle text-success display-3"></i>
                     </div>
+                    <h3 class="fw-bold text-dark mb-1">¡Gracias por tu preferencia!</h3>
+                    <p class="text-muted small px-3">
+                        Tu orden ha sido enviada directo a la barra de baristas. Aquí tienes el desglose oficial:
+                    </p>
 
-                    <div
-                        class="d-flex justify-content-between align-items-center bg-amber-light p-2 rounded text-dark fw-bold mb-2">
-                        <span>Total pagado:</span>
-                        <span class="fs-5 text-primary" id="modal-total-paid">Q0.00</span>
+                    <div id="modal-receipt-items" class="bg-light rounded-4 p-3 text-start mt-4 border shadow-sm text-secondary">
+                        </div>
+
+                    <div class="bg-amber-light rounded-4 p-3 mt-3 d-flex justify-content-between align-items-center">
+                        <span class="fw-bold text-dark">Total Abonado:</span>
+                        <span id="modal-total-paid" class="fw-bold fs-4" style="color: var(--coffeetime-medium);">
+                            Q0.00
+                        </span>
                     </div>
                 </div>
-                <div class="modal-footer border-0 bg-light">
-                    <button id="btnTerminarCompra" type="button" class="btn btn-secondary w-100 rounded-pill py-2"
-                        data-bs-dismiss="modal">Cerrar y Nueva Orden</button>
+
+                <div class="modal-footer border-0 p-3 bg-light">
+                    <button id="btnTerminarCompra" type="button" class="btn btn-secondary rounded-pill w-100 py-2.5 fw-bold" style="background-color: var(--coffeetime-dark); border: none;" data-bs-dismiss="modal">
+                        Comenzar Nueva Orden
+                    </button>
                 </div>
+
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="app.js"></script>
-</body>
 
+</body>
 </html>

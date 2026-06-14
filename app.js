@@ -96,10 +96,6 @@ class Pedido {
         this.#total = 0
     }
 
-    set productos(value) {
-        this.#productos = value
-    }
-
     get productos() {
         return this.#productos
     }
@@ -190,6 +186,7 @@ let numeroTotal = document.querySelector('#modal-total-paid')
 let btnVaciar = document.querySelector('#btn-clear')
 let btnFinalizarCompra = document.querySelector('#btnTerminarCompra')
 let filtrarCategoria = document.querySelector('#category-filters')
+let inputBuscar = document.querySelector('#search-input')
 
 let pedido = new Pedido()
 
