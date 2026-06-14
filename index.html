@@ -37,11 +37,12 @@
                         </div>
                         <div class="col-md-7">
                             <div class="d-flex flex-wrap gap-2 justify-content-md-end" id="category-filters">
-                                <button class="btn btn-custom-filter active" data-category="todos">Todas</button>
-                                <button class="btn btn-custom-filter" data-category="Bebida caliente">Bebidas
+                                <button class="todo btn btn-custom-filter" data-category="todos">Todas</button>
+                                <button class="bebida-caliente btn btn-custom-filter" data-category="Bebida caliente">Bebidas
                                     calientes</button>
-                                <button class="btn btn-custom-filter" data-category="Bebida fría">Bebidas frías</button>
-                                <button class="btn btn-custom-filter" data-category="Postre">Postres</button>
+                                <button class="bebida-fria btn btn-custom-filter" data-category="Bebida fría">Bebidas frías</button>
+                                <button class="postre btn btn-custom-filter" data-category="Postre">Postres</button>
+                                <button class="comida btn btn-custom-filter" data-category="Postre">Comida</button>
                             </div>
                         </div>
                     </div>
@@ -49,23 +50,6 @@
 
                 <h3 class="h5 mb-3 text-secondary fw-bold">Productos Disponibles</h3>
                 <div class="row row-cols-1 row-cols-md-2 g-3" id="products-container">
-                    <!-- <div class="col">
-                        <div class="card h-100 product-card shadow-sm border-0">
-                            <div class="card-body d-flex flex-column">
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <h5 class="card-title h6 mb-0 text-dark fw-bold">Café Latte</h5>
-                                    <span class="badge bg-amber text-dark">Bebida caliente</span>
-                                </div>
-                                <p class="card-text text-muted small flex-grow-1">Café con leche espumada</p>
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <span class="fs-5 fw-bold text-primary">Q18.00</span>
-                                    <button class="btn btn-sm btn-add-order rounded-pill px-3">
-                                        <i class="bi bi-plus-lg me-1"></i>Agregar
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
                 </div>
             </div>
 
@@ -78,7 +62,6 @@
                             <h3 class="h5 mb-0 fw-bold text-dark">
                                 <i class="bi bi-receipt me-2 text-primary"></i>Tu Pedido
                             </h3>
-                            <!-- <span class="badge bg-secondary rounded-pill" id="order-count">9</span> -->
                         </div>
 
                         <div class="card-body p-0 max-height-order" id="order-items-container">
@@ -122,7 +105,7 @@
 
         </div>
     </div>
-
+    
     <div class="modal fade" id="modalResumen" tabindex="-1" aria-labelledby="modalResumenLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow">
@@ -143,24 +126,16 @@
 
                     <div class="text-start bg-light p-3 rounded mb-3" id="modal-receipt-items">
                         <p class="fw-bold text-secondary border-bottom pb-1 mb-2">Productos:</p>
-                        <div class="d-flex justify-content-between small text-dark mb-1">
-                            <span>Café Latte x2</span>
-                            <span>Q36.00</span>
-                        </div>
-                        <div class="d-flex justify-content-between small text-dark mb-1">
-                            <span>Muffin x1</span>
-                            <span>Q15.00</span>
-                        </div>
                     </div>
 
                     <div
                         class="d-flex justify-content-between align-items-center bg-amber-light p-2 rounded text-dark fw-bold mb-2">
                         <span>Total pagado:</span>
-                        <span class="fs-5 text-primary" id="modal-total-paid">Q51.00</span>
+                        <span class="fs-5 text-primary" id="modal-total-paid">Q0.00</span>
                     </div>
                 </div>
                 <div class="modal-footer border-0 bg-light">
-                    <button type="button" class="btn btn-secondary w-100 rounded-pill py-2"
+                    <button id="btnTerminarCompra" type="button" class="btn btn-secondary w-100 rounded-pill py-2"
                         data-bs-dismiss="modal">Cerrar y Nueva Orden</button>
                 </div>
             </div>

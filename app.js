@@ -69,15 +69,23 @@ class Producto {
         this.#cantidad = this.#cantidad + 1
     }
 
+    disminuirCantidad() {
+        this.#cantidad = this.#cantidad - 1
+    }
+
     calcularSubtotal() {
         this.#subTotal = this.#precio * this.#cantidad
+    }
+
+    limpiarValores() {
+        this.#cantidad = 0
+        this.#subTotal = 0
     }
 }
 
 class Pedido {
     #productos;
     #impuesto;
-    #producto;
     #subTotalGeneral;
     #total;
 
@@ -117,6 +125,16 @@ class Pedido {
         }
     }
 
+    eliminarProducto(id) {
+        let temporal = []
+        this.#productos.forEach(item => {
+            if (item.id != id) {
+                temporal.push(item)
+            }
+        })
+        this.#productos = temporal
+    }
+
     calcularTotalGeneral() {
         this.#subTotalGeneral = 0
         this.#productos.forEach(item => {
@@ -125,24 +143,41 @@ class Pedido {
     }
 
     calcularImpuesto() {
-        this.#impuesto = 0.05 * this.subTotalGeneral
+        this.#impuesto = 0.05 * this.#subTotalGeneral
     }
 
     calcularTotal() {
         this.#total = this.#subTotalGeneral + this.#impuesto
     }
+
+    vaciarPedido() {
+        this.#productos.forEach(item => {
+            item.limpiarValores()
+        })
+        this.#productos = []
+        this.#impuesto = 0
+        this.#subTotalGeneral = 0
+        this.#total = 0
+    }
 }
 
-let producto1 = new Producto('Café Americano', 12, 'Bebidas Calientes', 'Café negro tradicional')
-let producto2 = new Producto('Café Latte', 18, 'Bebidas Calientes', 'Café con leche espumada')
-let producto3 = new Producto('Frappe de Chocolate', 25, 'Bebidas Frias', 'Bebida fría con chocolate y crema')
-let producto4 = new Producto('Smoothie de Fresa', 22, 'Bebidas Frias', 'Batido natural de fresa')
-let producto5 = new Producto('Muffin de Vainilla', 15, 'Postres', 'Pan dulce suave de vainilla')
-let producto6 = new Producto('Cheesecake', 28, 'Postres', 'Pastel frío de queso')
-let producto7 = new Producto('Sandwich de Pollo', 30, 'Postres', 'Sandwich con pollo y vegetales')
-let producto8 = new Producto('Bagel con Queso', 20, 'Postres', 'Bagel tostado con queso crema')
+let producto1 = new Producto('Café Americano', 12, 'Bebida-Caliente', 'Café negro tradicional')
+let producto2 = new Producto('Café Latte', 18, 'Bebida-Caliente', 'Café con leche espumada')
+let producto3 = new Producto('Frappe de Chocolate', 25, 'Bebida-Fria', 'Bebida fría con chocolate y crema')
+let producto4 = new Producto('Smoothie de Fresa', 22, 'Bebida-Fria', 'Batido natural de fresa')
+let producto5 = new Producto('Muffin de Vainilla', 15, 'Postre', 'Pan dulce suave de vainilla')
+let producto6 = new Producto('Cheesecake', 28, 'Postre', 'Pastel frío de queso')
+let producto7 = new Producto('Sandwich de Pollo', 30, 'Postre', 'Sandwich con pollo y vegetales')
+let producto8 = new Producto('Bagel con Queso', 20, 'Postre', 'Bagel tostado con queso crema')
+let producto9 = new Producto('Tostadas con Aguacate', 30, 'Comida', 'Pan tostado con aguacate y especias')
+let producto10 = new Producto('Hot Dog Especial', 25, 'Comida', 'Salchicha con salsas y vegetales')
+let producto11 = new Producto('Nachos con Queso', 28, 'Comida', 'Totopos crujientes cubiertos con queso')
+let producto12 = new Producto('Pan con Pollo', 30, 'Comida', 'Pan suave relleno de pollo desmenuzado')
+let producto13 = new Producto('Baguette de Pavo', 35, 'Comida', 'Pan baguette con pavo y vegetales frescos')
+let producto14 = new Producto('Mini Pizza Personal', 38, 'Comida', 'Pizza individual de queso y salsa de tomate')
+let producto15 = new Producto('Empanada de Carne', 18, 'Comida', 'Empanada horneada rellena de carne')
 
-let productos = [producto1, producto2, producto3, producto4, producto5, producto6, producto7, producto8]
+let productos = [producto1, producto2, producto3, producto4, producto5, producto6, producto7, producto8, producto9, producto10, producto11, producto12, producto13, producto14, producto15]
 
 let contProducto = document.querySelector('#products-container')
 let pedidosActuales = document.querySelector('#order-items-container')
@@ -152,6 +187,9 @@ let mostrarTotal = document.querySelector('#summary-total')
 let mostrarPedidoCompletado = document.querySelector('#modal-receipt-items')
 let btnFinalizar = document.querySelector('#btn-checkout')
 let numeroTotal = document.querySelector('#modal-total-paid')
+let btnVaciar = document.querySelector('#btn-clear')
+let btnFinalizarCompra = document.querySelector('#btnTerminarCompra')
+let filtrarCategoria = document.querySelector('#category-filters')
 
 let pedido = new Pedido()
 
@@ -170,22 +208,92 @@ contProducto.addEventListener('click', (event) => {
     }
 })
 
-btnFinalizar.addEventListener('click',(event)=>{
+btnFinalizar.addEventListener('click', (event) => {
     completarPedido(pedido)
 })
 
-pedidosActuales.addEventListener('click',(event)=>{
-    if(event.target.classList.contains('bi-plus')){
-        console.log(event.target.id)
+pedidosActuales.addEventListener('click', (event) => {
+    if (event.target.classList.contains('bi-plus') || event.target.classList.contains('aumentar')) {
+        pedido.productos.forEach(item => {
+            if (item.id == event.target.id) {
+                pedido.agregarProducto(item)
+                item.calcularSubtotal()
+                pedido.calcularTotalGeneral()
+                pedido.calcularImpuesto()
+                pedido.calcularTotal()
+                mostrarPedido(pedido.total, pedido.impuesto, pedido.subTotalGeneral, pedido.productos)
+            }
+        })
+    } else if (event.target.classList.contains('bi-dash') || event.target.classList.contains('disminuir')) {
+        pedido.productos.forEach(item => {
+            if (item.id == event.target.id) {
+                if (item.cantidad <= 1) {
+                    item.disminuirCantidad()
+                    pedido.eliminarProducto(item.id)
+                    pedido.calcularTotalGeneral()
+                    pedido.calcularImpuesto()
+                    pedido.calcularTotal()
+                    mostrarPedido(pedido.total, pedido.impuesto, pedido.subTotalGeneral, pedido.productos)
+                } else {
+                    item.disminuirCantidad()
+                    item.calcularSubtotal()
+                    pedido.calcularTotalGeneral()
+                    pedido.calcularImpuesto()
+                    pedido.calcularTotal()
+                    mostrarPedido(pedido.total, pedido.impuesto, pedido.subTotalGeneral, pedido.productos)
+                }
+            }
+        })
+    } else if (event.target.title == 'Eliminar del pedido') {
+        pedido.productos.forEach(item => {
+            if (item.id == event.target.id) {
+                item.limpiarValores()
+            }
+        })
+        pedido.eliminarProducto(event.target.id)
+        pedido.calcularTotalGeneral()
+        pedido.calcularImpuesto()
+        pedido.calcularTotal()
+        mostrarPedido(pedido.total, pedido.impuesto, pedido.subTotalGeneral, pedido.productos)
     }
 })
 
-const agregarProductos = (contProducto, productos) => {
+btnVaciar.addEventListener('click', (event) => {
+    if (pedido.productos.length == 0) {
+        alert('No hay ningun producto para eliminar')
+    } else {
+        pedido.vaciarPedido()
+        mostrarPedido(pedido.total, pedido.impuesto, pedido.subTotalGeneral, pedido.productos)
+    }
+})
+
+btnFinalizarCompra.addEventListener('click', (event) => {
+    pedido.vaciarPedido()
+    mostrarPedido(pedido.total, pedido.impuesto, pedido.subTotalGeneral, pedido.productos)
+})
+
+filtrarCategoria.addEventListener('click', (event) => {
+    if (event.target.classList.contains('bebida-caliente')) {
+        agregarProductos(contProducto, productos, 'bebida-caliente')
+    } else if (event.target.classList.contains('bebida-fria')) {
+        agregarProductos(contProducto, productos, 'bebida-fria')
+    } else if (event.target.classList.contains('postre')) {
+        agregarProductos(contProducto, productos, 'postre')
+    } else if (event.target.classList.contains('todo')) {
+        agregarProductos(contProducto, productos, 'todo')
+    } else if (event.target.classList.contains('comida')) {
+        agregarProductos(contProducto, productos, 'comida')
+    }
+})
+
+const agregarProductos = (contProducto, productos, queMostrar) => {
     let html = ''
 
     productos.forEach(producto => {
-        html += `
-        <div class="col">
+        if (queMostrar == 'bebida-caliente') {
+            if (producto.categoria.toLowerCase() == queMostrar) {
+                html += `
+                    <div class="col">
                         <div class="card h-100 product-card shadow-sm border-0">
                             <div class="card-body d-flex flex-column">
                                 <div class="d-flex justify-content-between align-items-start mb-2">
@@ -196,15 +304,99 @@ const agregarProductos = (contProducto, productos) => {
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <span class="fs-5 fw-bold text-primary">Q${producto.precio}.00</span>
                                     <button id="${producto.id}" class="btn btn-sm btn-add-order rounded-pill px-3">
-                                        <i class="bi bi-plus-lg me-1"></i>Agregar
+                                        Agregar
                                     </button>
                                 </div>
                             </div>
                         </div>
-        </div>
-        `
+                    </div>`
+            }
+        } else if (queMostrar == 'bebida-fria') {
+            if (producto.categoria.toLowerCase() == queMostrar) {
+                html += `
+                    <div class="col">
+                        <div class="card h-100 product-card shadow-sm border-0">
+                            <div class="card-body d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="card-title h6 mb-0 text-dark fw-bold">${producto.nombre}</h5>
+                                    <span class="badge bg-amber text-dark">${producto.categoria}</span>
+                                </div>
+                                <p class="card-text text-muted small flex-grow-1">${producto.descripcion}</p>
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <span class="fs-5 fw-bold text-primary">Q${producto.precio}.00</span>
+                                    <button id="${producto.id}" class="btn btn-sm btn-add-order rounded-pill px-3">
+                                        Agregar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+            }
+        } else if (queMostrar == 'postre') {
+            if (producto.categoria.toLowerCase() == queMostrar) {
+                html += `
+                    <div class="col">
+                        <div class="card h-100 product-card shadow-sm border-0">
+                            <div class="card-body d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="card-title h6 mb-0 text-dark fw-bold">${producto.nombre}</h5>
+                                    <span class="badge bg-amber text-dark">${producto.categoria}</span>
+                                </div>
+                                <p class="card-text text-muted small flex-grow-1">${producto.descripcion}</p>
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <span class="fs-5 fw-bold text-primary">Q${producto.precio}.00</span>
+                                    <button id="${producto.id}" class="btn btn-sm btn-add-order rounded-pill px-3">
+                                        Agregar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+            }
+        } else if (queMostrar == 'todo') {
+            html += `
+                    <div class="col">
+                        <div class="card h-100 product-card shadow-sm border-0">
+                            <div class="card-body d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="card-title h6 mb-0 text-dark fw-bold">${producto.nombre}</h5>
+                                    <span class="badge bg-amber text-dark">${producto.categoria}</span>
+                                </div>
+                                <p class="card-text text-muted small flex-grow-1">${producto.descripcion}</p>
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <span class="fs-5 fw-bold text-primary">Q${producto.precio}.00</span>
+                                    <button id="${producto.id}" class="btn btn-sm btn-add-order rounded-pill px-3">
+                                        Agregar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+        } else if (queMostrar == 'comida') {
+            if (producto.categoria.toLowerCase() == queMostrar) {
+                html += `
+                    <div class="col">
+                        <div class="card h-100 product-card shadow-sm border-0">
+                            <div class="card-body d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="card-title h6 mb-0 text-dark fw-bold">${producto.nombre}</h5>
+                                    <span class="badge bg-amber text-dark">${producto.categoria}</span>
+                                </div>
+                                <p class="card-text text-muted small flex-grow-1">${producto.descripcion}</p>
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <span class="fs-5 fw-bold text-primary">Q${producto.precio}.00</span>
+                                    <button id="${producto.id}" class="btn btn-sm btn-add-order rounded-pill px-3">
+                                        Agregar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+            }
+        }
     })
     contProducto.innerHTML = html
+    btnFinalizar.disabled = true
 }
 
 const mostrarPedido = (totalFinal, totalImpuesto, subTotalGeneral, productos) => {
@@ -222,11 +414,11 @@ const mostrarPedido = (totalFinal, totalImpuesto, subTotalGeneral, productos) =>
                     </div>
                     <div class="d-flex justify-content-between align-items-center mt-2">
                     <div class="btn-group btn-group-sm rounded-pill shadow-sm bg-light" role="group">
-                                        <button type="button" class="btn btn-light border-0 px-2">
+                                        <button id='${item.id}' type="button" class="disminuir btn btn-light border-0 px-2">
                                         <i id='${item.id}' class="bi bi-dash"></i></button>
                                         <span
                                             class="btn btn-light border-0 bg-white px-3 fw-bold disabled text-dark">${item.cantidad}</span>
-                                        <button type="button" class="btn btn-light border-0 px-2">
+                                        <button id='${item.id}' type="button" class="aumentar btn btn-light border-0 px-2">
                                         <i id='${item.id}' class="bi bi-plus"></i></button>
                                     </div>
                                     <button id='${item.id}' class="btn btn-sm text-danger border-0 p-1" title="Eliminar del pedido">
@@ -241,11 +433,21 @@ const mostrarPedido = (totalFinal, totalImpuesto, subTotalGeneral, productos) =>
     mostrarSubtotalGeneral.textContent = `Q${subTotalGeneral}.00`
     mostrarImpuesto.textContent = `Q${totalImpuesto}`
     mostrarTotal.textContent = `Q${totalFinal}`
+
+    if (productos.length == 0) {
+        btnFinalizar.disabled = true
+    } else {
+        btnFinalizar.disabled = false
+    }
 }
 
 const completarPedido = (pedido) => {
     let html1 = '<p class="fw-bold text-secondary border-bottom pb-1 mb-2">Productos:</p>'
     let html2 = ''
+    let html3 = `<div class="d-flex justify-content-between small text-dark mb-1">
+            <span>Impuesto/Recargo (5%):</span>
+            <span>Q${pedido.impuesto}</span>
+        </div>`
 
     pedido.productos.forEach(item => {
         html2 += `
@@ -256,9 +458,9 @@ const completarPedido = (pedido) => {
         `
     })
 
-    mostrarPedidoCompletado.innerHTML = html1 + html2
+    mostrarPedidoCompletado.innerHTML = html1 + html2 + html3
     numeroTotal.textContent = `Q${pedido.total}`
 }
 
 
-agregarProductos(contProducto, productos)
+agregarProductos(contProducto, productos, 'todo')
