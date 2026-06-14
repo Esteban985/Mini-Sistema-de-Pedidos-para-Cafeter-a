@@ -393,7 +393,11 @@ const agregarProductos = (contProducto, productos, queMostrar) => {
         }
     })
     contProducto.innerHTML = html
-    btnFinalizar.disabled = true
+    if(pedido.productos.length == 0){
+        btnFinalizar.disabled = true
+    }else{
+        btnFinalizar.disabled = false
+    }
 }
 
 const mostrarPedido = (totalFinal, totalImpuesto, subTotalGeneral, productos) => {
