@@ -172,8 +172,13 @@ let producto12 = new Producto('Pan con Pollo', 30, 'Comida', 'Pan suave relleno 
 let producto13 = new Producto('Baguette de Pavo', 35, 'Comida', 'Pan baguette con pavo y vegetales frescos')
 let producto14 = new Producto('Mini Pizza Personal', 38, 'Comida', 'Pizza individual de queso y salsa de tomate')
 let producto15 = new Producto('Empanada de Carne', 18, 'Comida', 'Empanada horneada rellena de carne')
+let producto16 = new Producto('Capuccino',6,'Bebida-Fria','Agua con cafe más leche')
+let producto17 = new Producto('Frappé Oreo',15,'Bebida-Fria','Espresso frío con leche, chocolate, trocitos de galleta Oreo y hielo triturado.')
+let producto18 = new Producto('Café Guatemalteco', 10, 'Bebida-Caliente','Café negro suave, hecho con granos de alta calidad 100% guatemaltecos.')
+let producto19 = new Producto('Chocolate caliente', 12, 'Bebida-Caliente','Disfruta de un delicioso chocolate caliente solo en McDonalds.')
+let producto20 = new Producto('Té Guatemalteco Manzanilla Relax', 8, 'Bebida-Caliente','Infusión de manzanilla, menta y flor de caléndula.')
 
-let productos = [producto1, producto2, producto3, producto4, producto5, producto6, producto7, producto8, producto9, producto10, producto11, producto12, producto13, producto14, producto15]
+let productos = [producto1, producto2, producto3, producto4, producto5, producto6, producto7, producto8, producto9, producto10, producto11, producto12, producto13, producto14, producto15, producto16, producto17, producto18, producto19, producto20]
 
 let contProducto = document.querySelector('#products-container')
 let pedidosActuales = document.querySelector('#order-items-container')
@@ -282,6 +287,39 @@ filtrarCategoria.addEventListener('click', (event) => {
         agregarProductos(contProducto, productos, 'comida')
     }
 })
+
+inputBuscar.addEventListener('input', (event) => {
+    buscarProductos(contProducto, productos, event.target.value)
+})
+
+const buscarProductos = (contProducto, productos, aBuscar) => {
+    let html = ''
+
+    productos.forEach(item => {
+        if (item.nombre.toLowerCase().includes(aBuscar.toLowerCase()) || item.categoria.toLowerCase().includes(aBuscar.toLowerCase())) {
+            html += `
+                    <div class="col">
+                        <div class="card h-100 product-card shadow-sm border-0">
+                            <div class="card-body d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="card-title h6 mb-0 text-dark fw-bold">${item.nombre}</h5>
+                                    <span class="badge bg-amber text-dark">${item.categoria}</span>
+                                </div>
+                                <p class="card-text text-muted small flex-grow-1">${item.descripcion}</p>
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <span class="fs-5 fw-bold text-primary">Q${item.precio}.00</span>
+                                    <button id="${item.id}" class="btn btn-sm btn-add-order rounded-pill px-3">
+                                        Agregar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+        }
+    })
+
+    contProducto.innerHTML = html
+}
 
 const agregarProductos = (contProducto, productos, queMostrar) => {
     let html = ''
@@ -393,9 +431,9 @@ const agregarProductos = (contProducto, productos, queMostrar) => {
         }
     })
     contProducto.innerHTML = html
-    if(pedido.productos.length == 0){
+    if (pedido.productos.length == 0) {
         btnFinalizar.disabled = true
-    }else{
+    } else {
         btnFinalizar.disabled = false
     }
 }
